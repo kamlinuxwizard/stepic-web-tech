@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-USER="web"
+USER="box"
 # USER="firstuser"
 
 sudo ln -s /home/$USER/web/etc/nginx.conf /etc/nginx/sites-enabled/test.conf
