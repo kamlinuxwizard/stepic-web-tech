@@ -1,11 +1,11 @@
 CONFIG = {
-    # 'mode': 'wsgi',
+#    'mode': 'wsgi',
     'working_dir': '/home/box/web/',
-    # 'python': '/usr/bin/python',
+#    'python': '/usr/bin/python',
     'args': (
-        '--bind=127.0.0.1:8080',
+        '--bind=0.0.0.0:8080',
         '--workers=2',
         '--timeout=60',
-        'hello.app',
+        'hello:app',
     ),
 }
