@@ -15,14 +15,14 @@ Including another URLconf   # WARNING:
 """
 # from django.contrib import adminfi
 from django.urls import path, re_path
-from qa.views import test
+from qa.views import test, index
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    path('', test, name='test'),
+    path('', index, name='index'),
     path('login/', test, name='test'),
     path('signup/', test, name='test'),
-    re_path(r'question/[0-9]+/', test, name='test'),
+    re_path(r'question/(?P<id>\d+)/', test, name='test'),
     path('ask/', test, name='test'),
     path('popular/', test, name='test'),
     path('new/', test, name='test'),
