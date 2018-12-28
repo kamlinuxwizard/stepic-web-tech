@@ -26,7 +26,7 @@ bash /home/box/web/init.sh
 Установить Django в виртуальное окружение можно с помощью
 
 > pip install -r requirements.txt
-> # pip install django
+> pip install django
 
 в вашем окружении (заметьте, не pip3, несмотря на третий Python!)
 
@@ -40,10 +40,14 @@ bash /home/box/web/init.sh
 
 *Подключение к mysql*
 
-#sudo pip3 install mysqlclient fails with mysql_config not found
-sudo apt-get install libmysqlclient-dev
-#without pip3 it will not going to work for python3
-pip3 install mysqlclient
+if sudo pip3 install mysqlclient fails with mysql_config not found
 
-# to run django migration
-python3 manage.py migrate
+>sudo apt-get install libmysqlclient-dev
+
+without pip3 it will not going to work for python3
+
+> pip3 install mysqlclient
+
+to run django migration
+
+> python3 manage.py migrate
