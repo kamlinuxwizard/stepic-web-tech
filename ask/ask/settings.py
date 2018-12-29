@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django_mysql',
     'qa.apps.QaConfig',
 ]
 
@@ -84,12 +83,10 @@ WSGI_APPLICATION = 'ask.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ask',
-        'USER': 'ask',
-        'PASSWORD': 'poX-1eema',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-    }
+        'OPTIONS': {
+            'read_default_file': os.path.join(BASE_DIR, 'my.cnf'),
+        },
+    },
 }
 
 # Password validation
