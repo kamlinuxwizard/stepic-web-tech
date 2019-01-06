@@ -51,3 +51,9 @@ without pip3 it will not going to work for python3
 to run django migration
 
 > python3 manage.py migrate
+
+*gunicorn*
+
+Запуск для python3
+
+> askenv/bin/gunicorn --workers 3 --bind 0.0.0.0:8000 --reload ask.wsgi:application
