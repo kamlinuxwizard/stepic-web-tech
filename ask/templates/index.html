@@ -1,4 +1,35 @@
-{% extends 'base.html' %}
-D
-{% block A %}{{ block.super }}E{% endblock %}
-F
+{% extends "base.html" %}
+
+{% block title %}
+    {{ block.super }} – New
+{% endblock %}
+
+{% block h1 %}
+    <h1>New</h1>
+{% endblock %}
+
+{% block content %}
+    {% for obj in questions %}
+        <div class="question">
+            <hr />
+            <a href="{{ obj.get_absolute_url }}">{{ obj }}</a><br />
+            created at: {{ obj.added_at|date:"d.m.Y" }} {{ obj.added_at|time:"H:i:s" }}
+            rating: {{  obj.rating }}
+        </div>
+    {% endfor %}
+
+    <nav>
+        <ul class="pagination">
+        {% for p in paginator.page_range %}
+            {% if p.number == page.number %}
+                <li class="active">
+            {% else %}
+                <li>
+            {% endif %}
+                    <a href="{{ paginator.baseurl }}?page={{ p }}">{{ p }}</a>
+                </li>
+        {% endfor %}
+        </ul>
+    </nav>
+
+{% endblock %}

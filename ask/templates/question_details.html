@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ block.super }} – Question Detail
+{% endblock %}
+
+{% block h1 %}
+    <h1>Question: {{ question }}</h1>
+{% endblock %}
+
+{% block content %}
+
+    <div>
+        Text: {{ question.text }}<br />
+    </div>
+
+    {% for obj in answers %}
+        <div class="question">
+            <hr />
+            {{ obj }}<br />
+            created at: {{ obj.added_at|date:"d.m.Y" }} {{ obj.added_at|time:"H:i:s" }}
+            author: {{  obj.author }}
+        </div>
+    {% endfor %}
+
+
+{% endblock %}

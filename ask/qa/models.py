@@ -15,16 +15,19 @@ class Question(models.Model):
     text = models.TextField()
     added_at = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField(default=0)
-    author = models.ForeignKey(User, on_delete=models.PROTECT)
-    likes = models.ManyToManyField(User, related_name='likes')
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    likes = models.ManyToManyField(User, related_name='likes', blank=True)
 
     objects = QuestionManager()
 
     def __unicode__(self):
-        return self.title()
+        return self.title
 
-    # def get_absolute_url(self):
-    #     return '/question/%d/' % self.pk
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return '/question/{}/'.format(self.pk)
 
     class Meta:
         ordering = ['-added_at']
@@ -33,11 +36,17 @@ class Question(models.Model):
 class Answer(models.Model):
     text = models.TextField()
     added_at = models.DateTimeField(auto_now_add=True)
-    question = models.ForeignKey(Question, on_delete=models.PROTECT)
-    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    question = models.ForeignKey(Question, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __unicode__(self):
-        return self.text()
+        return self.text
+
+    def __str__(self):
+        return self.text
+
+    def short_text(self):
+        return self.text[:97] + '...' if len(self.text) > 100 else self.text
 
     class Meta:
         ordering = ['-added_at']
