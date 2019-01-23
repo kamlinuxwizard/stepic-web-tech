@@ -56,4 +56,4 @@ to run django migration
 
 Запуск для python3
 
-> askenv/bin/gunicorn --workers 3 --bind 0.0.0.0:8000 --reload ask.wsgi:application
+/home/box/web/askenv/bin/gunicorn --workers 3 --bind 0.0.0.0:8000 --reload ask.wsgi:application

@@ -18,12 +18,12 @@ from django.urls import path, re_path
 from qa.views import index, question, popular, test
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', index, name='index'),
+    path('admin/', admin.site.urls),
     path('login/', test, name='test'),
     path('signup/', test, name='test'),
-    re_path(r'question/(?P<slug>\d+)/', question, name='question'),
     path('ask/', test, name='test'),
     path('popular/', popular, name='popular'),
     path('new/', test, name='test'),
+    re_path(r'question/(?P<slug>\d+)/', question, name='question'),
 ]

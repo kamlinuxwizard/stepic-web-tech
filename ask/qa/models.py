@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth.models import User
 
 
@@ -27,7 +28,7 @@ class Question(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return '/question/{}/'.format(self.pk)
+        return reverse('question', args=[self.pk])
 
     class Meta:
         ordering = ['-added_at']
