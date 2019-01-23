@@ -21,9 +21,6 @@ class Question(models.Model):
 
     objects = QuestionManager()
 
-    def __unicode__(self):
-        return self.title
-
     def __str__(self):
         return self.title
 
@@ -39,9 +36,6 @@ class Answer(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)
     question = models.ForeignKey(Question, on_delete=models.SET_NULL, null=True)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-
-    def __unicode__(self):
-        return self.text
 
     def __str__(self):
         return self.text

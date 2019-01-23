@@ -1,35 +1,19 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{ block.super }} – Question Detail
+    {{ block.super }} – Add Question
 {% endblock %}
 
 {% block h1 %}
-    <h1>Question: {{ question }}</h1>
+    <h1>Add Question</h1>
 {% endblock %}
 
 {% block content %}
+    {% for e in form.non_field_errors %}
+        <div class="alert alert-danger">{{ e }}</div>
+    {% endfor %}
 
-    <div>
-        Text: {{ question.text }}<br />
-    </div>
-
-    <hr />
-
-    {% if answers %}
-        {% for obj in answers %}
-            <div class="question">
-                {{ obj }}<br />
-                created at: {{ obj.added_at|date:"d.m.Y" }} {{ obj.added_at|time:"H:i:s" }}
-                author: {{  obj.author }}
-            </div>
-            <hr />
-        {% endfor %}
-    {% else %}
-        <div>No answers.</div>
-    {% endif %}
-
-    <form class="form-horizontal" method="post" action="/question/{{ question.pk }}/">
+    <form class="form-horizontal" method="post" action="/ask/">
         {% csrf_token %}
         <fieldset>
             {% for field in form %}
@@ -44,5 +28,4 @@
             <button type="submit" class="btn btn-primary">Сохранить</button>
         </div>
     </form>
-
 {% endblock %}

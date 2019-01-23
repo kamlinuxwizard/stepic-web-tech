@@ -7,7 +7,18 @@
     </head>
 
     <body>
+        {% block navigation %}
+            <nav>
+                <ul>
+                    <li><a href="{% url 'index' %}">Questions</a></li>
+                    <li><a href="{% url 'popular' %}">Popular Questions</a></li>
+                    <li><a href="{% url 'ask' %}">New Question</a></li>
+                </ul>
+            </nav>
+        {% endblock %}
+
         {% block h1 %}{% endblock %}
+
         {% block content %}{% endblock %}
     </body>
 

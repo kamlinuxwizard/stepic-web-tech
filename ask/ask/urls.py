@@ -15,14 +15,14 @@ Including another URLconf   # WARNING:
 """
 from django.contrib import admin
 from django.urls import path, re_path
-from qa.views import index, question, popular, test
+from qa.views import index, question, popular, ask, test
 
 urlpatterns = [
     path('', index, name='index'),
     path('admin/', admin.site.urls),
     path('login/', test, name='test'),
     path('signup/', test, name='test'),
-    path('ask/', test, name='test'),
+    path('ask/', ask, name='ask'),
     path('popular/', popular, name='popular'),
     path('new/', test, name='test'),
     re_path(r'question/(?P<slug>\d+)/', question, name='question'),

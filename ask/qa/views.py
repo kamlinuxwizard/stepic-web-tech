@@ -1,10 +1,12 @@
 from django.views.decorators.http import require_GET
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.paginator import Paginator, EmptyPage
 from django.shortcuts import render, get_object_or_404
 
+
 # from django.contrib.auth.models import User
-from qa.models import Question, Answer
+from .models import Question, Answer
+from .forms import AddQuestionForm, AddAnswerForm
 
 
 def paginate(request, qs):
@@ -64,10 +66,34 @@ def question(request, slug):
     except Answer.DoesNotExist:
         answers = None
 
+    if request.method == "POST":
+        form = AddAnswerForm(question, request.POST)
+        if form.is_valid():
+            answer = form.save()
+            url = question.get_absolute_url()
+            return HttpResponseRedirect(url)
+    else:
+        form = AddAnswerForm(question)
+
     return render(request, 'question_details.html', {
         'question': question,
-        'answers': answers
+        'answers': answers,
+        'form': form
     })
+
+
+def ask(request):
+    if request.method == "POST":
+        form = AddQuestionForm(request.POST)
+        if form.is_valid():
+            question = form.save()
+            url = question.get_absolute_url()
+            return HttpResponseRedirect(url)
+    else:
+        form = AddQuestionForm()
+    return render(request,
+                  'question_add.html',
+                  {'form': form})
 
 
 def test(request):
