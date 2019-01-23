@@ -7,6 +7,9 @@ class AddQuestionForm(forms.Form):
     title = forms.CharField(max_length=255)
     text = forms.CharField(widget=forms.Textarea)
 
+    def clean(self):
+        return self.cleaned_data
+
     def save(self):
         question = Question(**self.cleaned_data)
         question.author = User.objects.get(pk=1)
@@ -20,6 +23,9 @@ class AddAnswerForm(forms.Form):
         super(AddAnswerForm, self).__init__(*args, **kwargs)
 
     text = forms.CharField(widget=forms.Textarea)
+
+    def clean(self):
+        return self.cleaned_data
 
     def save(self):
         answer = Answer(**self.cleaned_data)

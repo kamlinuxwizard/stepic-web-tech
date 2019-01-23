@@ -70,7 +70,7 @@ def question(request, slug):
         form = AddAnswerForm(question, request.POST)
         if form.is_valid():
             answer = form.save()
-            url = question.get_absolute_url()
+            url = answer.question.get_absolute_url()
             return HttpResponseRedirect(url)
     else:
         form = AddAnswerForm(question)
@@ -91,6 +91,7 @@ def ask(request):
             return HttpResponseRedirect(url)
     else:
         form = AddQuestionForm()
+
     return render(request,
                   'question_add.html',
                   {'form': form})
