@@ -65,14 +65,15 @@ def question(request, slug):
         answers = None
 
     if request.method == "POST":
-        form = AnswerForm(question, request.POST)
+        # form = AnswerForm(question, request.POST)
+        form = AnswerForm(request.POST)
         if form.is_valid():
             answer = form.save()
             url = answer.question.get_absolute_url()
             return HttpResponseRedirect(url)
     else:
-        form = AnswerForm(question)
-
+        # form = AnswerForm(question)
+        form = AnswerForm(initial={'question': question, })
     return render(request, 'question_details.html', {
         'question': question,
         'answers': answers,

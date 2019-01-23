@@ -18,11 +18,12 @@ class AskForm(forms.Form):
 
 
 class AnswerForm(forms.Form):
-    def __init__(self, question, *args, **kwargs):
-        self.question = question
-        super(AnswerForm, self).__init__(*args, **kwargs)
-
+    # def __init__(self, question, *args, **kwargs):
+    #     self.question = question
+    #     super(AnswerForm, self).__init__(*args, **kwargs)
     text = forms.CharField(widget=forms.Textarea)
+    initial='question_id'
+    question = forms.ModelChoiceField(queryset=Question.objects.filter(), initial=0)
 
     def clean(self):
         return self.cleaned_data
@@ -30,6 +31,24 @@ class AnswerForm(forms.Form):
     def save(self):
         answer = Answer(**self.cleaned_data)
         answer.author = User.objects.get(pk=1)
-        answer.question = self.question
+        # answer.question = Question.objects.get()
+        # answer.question = self.question
         answer.save()
         return answer
+
+# class AnswerForm(forms.Form):
+#     def __init__(self, question, *args, **kwargs):
+#         self.question = question
+#         super(AnswerForm, self).__init__(*args, **kwargs)
+#
+#     text = forms.CharField(widget=forms.Textarea)
+#
+#     def clean(self):
+#         return self.cleaned_data
+#
+#     def save(self):
+#         answer = Answer(**self.cleaned_data)
+#         answer.author = User.objects.get(pk=1)
+#         answer.question = self.question
+#         answer.save()
+#         return answer
