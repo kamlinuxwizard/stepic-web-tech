@@ -3,10 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.core.paginator import Paginator, EmptyPage
 from django.shortcuts import render, get_object_or_404
 
-
-# from django.contrib.auth.models import User
 from .models import Question, Answer
-from .forms import AddQuestionForm, AddAnswerForm
+from .forms import AskForm, AnswerForm
 
 
 def paginate(request, qs):
@@ -67,13 +65,13 @@ def question(request, slug):
         answers = None
 
     if request.method == "POST":
-        form = AddAnswerForm(question, request.POST)
+        form = AnswerForm(question, request.POST)
         if form.is_valid():
             answer = form.save()
             url = answer.question.get_absolute_url()
             return HttpResponseRedirect(url)
     else:
-        form = AddAnswerForm(question)
+        form = AnswerForm(question)
 
     return render(request, 'question_details.html', {
         'question': question,
@@ -84,13 +82,13 @@ def question(request, slug):
 
 def ask(request):
     if request.method == "POST":
-        form = AddQuestionForm(request.POST)
+        form = AskForm(request.POST)
         if form.is_valid():
             question = form.save()
             url = question.get_absolute_url()
             return HttpResponseRedirect(url)
     else:
-        form = AddQuestionForm()
+        form = AskForm()
 
     return render(request,
                   'question_add.html',

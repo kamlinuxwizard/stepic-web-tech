@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from .models import Question, Answer
 
 
-class AddQuestionForm(forms.Form):
+class AskForm(forms.Form):
     title = forms.CharField(max_length=255)
     text = forms.CharField(widget=forms.Textarea)
 
@@ -17,10 +17,10 @@ class AddQuestionForm(forms.Form):
         return question
 
 
-class AddAnswerForm(forms.Form):
+class AnswerForm(forms.Form):
     def __init__(self, question, *args, **kwargs):
         self.question = question
-        super(AddAnswerForm, self).__init__(*args, **kwargs)
+        super(AnswerForm, self).__init__(*args, **kwargs)
 
     text = forms.CharField(widget=forms.Textarea)
 
