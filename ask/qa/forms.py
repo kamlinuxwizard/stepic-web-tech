@@ -22,7 +22,6 @@ class AnswerForm(forms.Form):
     #     self.question = question
     #     super(AnswerForm, self).__init__(*args, **kwargs)
     text = forms.CharField(widget=forms.Textarea)
-    initial='question_id'
     question = forms.ModelChoiceField(queryset=Question.objects.filter(), initial=0)
 
     def clean(self):
@@ -31,7 +30,6 @@ class AnswerForm(forms.Form):
     def save(self):
         answer = Answer(**self.cleaned_data)
         answer.author = User.objects.get(pk=1)
-        # answer.question = Question.objects.get()
         # answer.question = self.question
         answer.save()
         return answer
