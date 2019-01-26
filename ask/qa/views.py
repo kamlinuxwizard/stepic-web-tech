@@ -1,10 +1,19 @@
 from django.views.decorators.http import require_GET
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+
 from django.core.paginator import Paginator, EmptyPage
+
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+
+from django.views.generic.edit import FormView
+from django.views.generic.base import View
+
 from .models import Question, Answer
-from .forms import AskForm, AnswerForm
+from .forms import AskForm, AnswerForm, SignUpForm
 
 
 def paginate(request, qs):
@@ -36,11 +45,9 @@ def index(request):
 
     page = paginate(request, new_questions)
 
-    return render(request, 'index.html', {
-        'questions': page.object_list,
-        'paginator': page.paginator,
-        'page': page
-    })
+    return render(request,
+                  'index.html',
+                  {'questions': page.object_list, 'paginator': page.paginator, 'page': page})
 
 
 @require_GET
@@ -49,11 +56,9 @@ def popular(request):
 
     page = paginate(request, popular_questions)
 
-    return render(request, 'popular.html', {
-        'questions': page.object_list,
-        'paginator': page.paginator,
-        'page': page
-    })
+    return render(request,
+                  'popular.html',
+                  {'questions': page.object_list, 'paginator': page.paginator, 'page': page})
 
 
 def question(request, slug):
@@ -67,6 +72,7 @@ def question(request, slug):
     if request.method == "POST":
         # form = AnswerForm(question, request.POST)
         form = AnswerForm(request.POST)
+        form._user = request.user
         if form.is_valid():
             answer = form.save()
             url = answer.question.get_absolute_url()
@@ -74,16 +80,17 @@ def question(request, slug):
     else:
         # form = AnswerForm(question)
         form = AnswerForm(initial={'question': question, })
-    return render(request, 'question_details.html', {
-        'question': question,
-        'answers': answers,
-        'form': form
-    })
+
+    return render(request,
+                  'question_details.html',
+                  {'question': question, 'answers': answers, 'form': form})
 
 
+@login_required(login_url='login')
 def ask(request):
     if request.method == "POST":
         form = AskForm(request.POST)
+        form._user = request.user
         if form.is_valid():
             question = form.save()
             url = question.get_absolute_url()
@@ -94,6 +101,49 @@ def ask(request):
     return render(request,
                   'question_add.html',
                   {'form': form})
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return HttpResponseRedirect('/')
+    else:
+        form = SignUpForm()
+
+    return render(request,
+                  'signup.html',
+                  {'form': form})
+
+
+class LoginFormView(FormView):
+    form_class = AuthenticationForm
+
+    # Шаблон, который будет использоваться при отображении представления.
+    template_name = "login.html"
+
+    # Ссылка, на которую будет перенаправляться пользователь в случае успешного входа.
+    success_url = "/"
+
+    def form_valid(self, form):
+        # Получаем объект пользователя на основе введённых в форму данных.
+        # Выполняем аутентификацию пользователя.
+        login(self.request, form.get_user())
+        return super(LoginFormView, self).form_valid(form)
+
+
+class LogoutView(View):
+    def get(self, request):
+        # Выполняем выход для пользователя, запросившего данное представление.
+        logout(request)
+
+        # После чего, перенаправляем пользователя на главную страницу.
+        return HttpResponseRedirect("/")
 
 
 def test(request):

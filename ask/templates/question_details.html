@@ -29,20 +29,24 @@
         <div>No answers.</div>
     {% endif %}
 
-    <form class="form-horizontal" method="post" action="/question/{{ question.pk }}/">
-        {% csrf_token %}
-        <fieldset>
-            {% for field in form %}
-                <div class="control-group
-                    {% if field.errors %}has-error{% endif %}">
-                    <label class="control-label">{{ field.label }}</label>
-                    <div class="controls">{{ field }}</div>
-                </div>
-            {% endfor %}
-        </fieldset>
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Сохранить</button>
-        </div>
-    </form>
+    <hr />
 
+    {% if user.is_authenticated %}
+        <form class="form-horizontal" method="post" action="/question/{{ question.pk }}/">
+            {% csrf_token %}
+            <fieldset>
+                {% for field in form %}
+                    <div class="control-group {% if field.errors %}has-error{% endif %}">
+                        <label class="control-label">{{ field.label }}</label>
+                        <div class="controls">{{ field }}</div>
+                    </div>
+                {% endfor %}
+            </fieldset>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </div>
+        </form>
+    {% else %}
+        <div>For answer you need <a href="{% url 'login' %}">login</a> </div>
+    {% endif %}
 {% endblock %}
