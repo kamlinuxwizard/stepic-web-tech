@@ -59,13 +59,26 @@ class AnswerForm(forms.Form):
 #         return answer
 
 
-class SignUpForm(UserCreationForm):
-    email = forms.EmailField(max_length=150, help_text='Enter your email address.')
-    # password = forms.PasswordInput()
-    # password1 = None
-    password2 = None
+# class SignUpForm(UserCreationForm):
+#     email = forms.EmailField(max_length=150, help_text='Enter your email address.')
+#     # password = forms.PasswordInput()
+#     # password1 = None
+#     password2 = None
+#
+#     class Meta:
+#         model = User
+#         fields = ('username', 'email', 'password1')
+
+class SignUpForm(forms.ModelForm):
+    password = forms.CharField(label='password', widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1')
+        fields = ('username', 'email')
 
+    def clean_username(self):
+        try:
+            User.objects.get(username=self.cleaned_data['username'])
+            raise forms.ValidationError('User already exist.')
+        except User.DoesNotExist:
+            return self.cleaned_data['username']
